@@ -123,7 +123,7 @@ lazy val commonSettings = Seq(
 
 // ---- projects ----
 lazy val llm4s = (project in file("."))
-  .aggregate(core, samples, workspaceShared, workspaceRunner, workspaceClient, workspaceSamples)
+  .aggregate(core, samples, workspaceShared, workspaceRunner, workspaceClient, workspaceSamples, traceOpentelemetry)
   .settings(
     publish / skip := true
   )
@@ -144,7 +144,6 @@ lazy val core = (project in file("modules/core"))
       Deps.websocket,
       Deps.scalatest % Test,
       Deps.scalamock % Test,
-      Deps.sttp,
       Deps.ujson,
       Deps.pdfbox,
       Deps.commonsIO,
@@ -158,7 +157,9 @@ lazy val core = (project in file("modules/core"))
       Deps.config,
       Deps.hikariCP,
       Deps.awsS3,
-      Deps.awsSts
+      Deps.awsSts,
+      Deps.prometheusCore,
+      Deps.prometheusHttp
     )
   )
 
@@ -185,7 +186,6 @@ lazy val workspaceClient = (project in file("modules/workspace/workspaceClient")
       Deps.websocket,
       Deps.scalatest % Test,
       Deps.scalamock % Test,
-      Deps.sttp,
       Deps.ujson,
       Deps.pdfbox,
       Deps.commonsIO,
@@ -238,6 +238,18 @@ lazy val workspaceSamples = (project in file("modules/workspace/workspaceSamples
     coverageEnabled := false
   )
 
+lazy val traceOpentelemetry = (project in file("modules/trace-opentelemetry"))
+  .dependsOn(core)
+  .settings(
+    name := "llm4s-trace-opentelemetry",
+    commonSettings,
+    libraryDependencies ++= Seq(
+      Deps.opentelemetryApi,
+      Deps.opentelemetrySdk,
+      Deps.opentelemetryExporterOtlp
+    )
+  )
+
 lazy val crossTestScala2 = (project in file("modules/crossTest/scala2"))
   .dependsOn(core)
   .settings(
@@ -271,7 +283,3 @@ lazy val crossTestScala3 = (project in file("modules/crossTest/scala3"))
       Deps.scalatest % Test
     )
   )
-
-mimaPreviousArtifacts := Set(
-  organization.value %% "llm4s" % "0.1.4"
-)

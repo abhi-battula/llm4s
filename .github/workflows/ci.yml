@@ -134,6 +134,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
+          # Include OS and Scala version to make CI failures easier to diagnose
           name: test-reports-${{ matrix.os }}-scala-${{ matrix.scala }}
           path: |
             **/target/test-reports/

@@ -33,11 +33,14 @@ object Versions {
   val jna         = "5.13.0"
   val vosk        = "0.3.45"
 
-  val sttp       = "4.0.9"
   val cask       = "0.10.2"
 
   // AWS SDK
   val awsSdk     = "2.29.51"
+  val opentelemetry = "1.34.1"
+
+  // Prometheus (1.x stable)
+  val prometheus = "1.4.3"
 }
 
 object Deps {
@@ -71,12 +74,18 @@ object Deps {
   val jna         = "net.java.dev.jna" % "jna"          % Versions.jna
   val vosk        = "com.alphacephei"  % "vosk"         % Versions.vosk
 
-  val sttp       = "com.softwaremill.sttp.client4" %% "core" % Versions.sttp
   val cask       = "com.lihaoyi" %% "cask" % Versions.cask
 
   // AWS SDK
   val awsS3      = "software.amazon.awssdk" % "s3"  % Versions.awsSdk
   val awsSts     = "software.amazon.awssdk" % "sts" % Versions.awsSdk
+
+  val opentelemetryApi = "io.opentelemetry" % "opentelemetry-api" % Versions.opentelemetry
+  val opentelemetrySdk = "io.opentelemetry" % "opentelemetry-sdk" % Versions.opentelemetry
+  val opentelemetryExporterOtlp = "io.opentelemetry" % "opentelemetry-exporter-otlp" % Versions.opentelemetry
+  // Prometheus metrics
+  val prometheusCore = "io.prometheus" % "prometheus-metrics-core" % Versions.prometheus
+  val prometheusHttp = "io.prometheus" % "prometheus-metrics-exporter-httpserver" % Versions.prometheus
 }
 
 object Common {
